@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from "react";
+import { SnackbarProvider } from "notistack";
+import { useRoutes } from "react-router";
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from "./theme";
+import routes from "./routes";
+import GlobalStyles from "./components/GlobalStyles";
+import useSettings from "./hooks/useSettings";
+import useScrollReset from "./hooks/use-scroll-reset";
+import "./assets/i18n";
 
-function App() {
+interface Props {}
+
+const App: FC<Props> = () => {
+  const content = useRoutes(routes);
+  const { settings } = useSettings();
+  useScrollReset();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider
+      theme={createTheme({
+        ...settings,
+      })}
+    >
+      <SnackbarProvider dense maxSnack={3}>
+        <GlobalStyles />
+        {content}
+      </SnackbarProvider>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
