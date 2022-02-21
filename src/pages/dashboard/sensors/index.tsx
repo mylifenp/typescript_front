@@ -23,7 +23,12 @@ const columns: GridColDef[] = [
     width: 130,
     field: "complete",
     headerName: "complete",
-    valueGetter: (params: GridValueGetterParams) => params.row.state.name,
+    valueGetter: (params: GridValueGetterParams) => {
+      const { complete } = params.row;
+      // params.row.complete.name;
+      if (!complete || typeof complete === null) return "";
+      return complete.name;
+    },
   },
   {
     width: 130,
@@ -44,44 +49,24 @@ const columns: GridColDef[] = [
   },
   { width: 130, field: "entry_year", headerName: "since (year)" },
   { width: 130, field: "end_of_life", headerName: "EOL (year)" },
-  { width: 130, field: "mega_pixel", headerName: "MPix" },
-  { width: 130, field: "x_resolution", headerName: "pixel# x" },
-  { width: 130, field: "y_resolution", headerName: "pixel# y" },
-  {
-    width: 130,
-    headerName: "pix size (µm)",
-    field: "pixel_size",
-  },
-  {
-    field: "shutter_type",
-    valueGetter: (params: GridValueGetterParams) =>
-      params.row.shutter_type.map((item: any) => item.name).join(", "),
-    width: 180,
-  },
-  {
-    field: "spectrum",
-    valueGetter: (params: GridValueGetterParams) =>
-      params.row.spectrum.map((item: any) => item.name).join(", "),
-    width: 180,
-  },
   { width: 130, field: "optical_area_x", headerName: "opt width(mm)" },
   { width: 130, field: "optical_area_y", headerName: "opt height(mm)" },
-  { width: 170, field: "exact_optical_area_diagonal" },
-  { width: 130, field: "next_optical_class" },
-  { width: 130, field: "aspect_ratio" },
-  { width: 130, field: "housing_x" },
-  { width: 130, field: "housing_y" },
-  { width: 130, field: "optical_center_x" },
-  { width: 130, field: "optical_center_y" },
-  { width: 130, field: "center_shift_x" },
-  { width: 130, field: "center_shift_y" },
-  { width: 130, field: "housing_glass" },
-  { width: 130, field: "glass_lid_thickness" },
-  { width: 130, field: "focal_plane_from_bottom" },
-  { width: 130, field: "glass_index" },
-  { width: 130, field: "pixel_lens_cra" },
-  { width: 130, field: "alternative_designation" },
-  { width: 130, field: "other_info" },
+  { width: 170, field: "exact_optical_area_diagonal", headerName: "Optical Diagonal(exact)"},
+  // { width: 130, field: "next_optical_class" },
+  // { width: 130, field: "aspect_ratio" },
+  // { width: 130, field: "housing_x" },
+  // { width: 130, field: "housing_y" },
+  // { width: 130, field: "optical_center_x" },
+  // { width: 130, field: "optical_center_y" },
+  // { width: 130, field: "center_shift_x" },
+  // { width: 130, field: "center_shift_y" },
+  // { width: 130, field: "housing_glass" },
+  // { width: 130, field: "glass_lid_thickness" },
+  // { width: 130, field: "focal_plane_from_bottom" },
+  // { width: 130, field: "glass_index" },
+  // { width: 130, field: "pixel_lens_cra" },
+  // { width: 130, field: "alternative_designation" },
+  // { width: 130, field: "other_info" },
 ];
 
 const options = {
@@ -108,6 +93,9 @@ const Sensors: FC<Props> = () => {
     if (!data) return;
     setResults(data.sensors as Sensor[]);
   }, [data]);
+
+  if (loading) return <Loading />;
+  if (error) return <>error occured</>;
 
   const handleClick = (
     params: GridRowParams,
@@ -144,11 +132,9 @@ const Sensors: FC<Props> = () => {
     });
   };
 
-  if (loading) return <Loading />;
-  if (error) return <>error occured</>;
-
-  <Box sx={{ m: 1, p: 1 }}>
-    {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+  return (
+    <Box sx={{ m: 1, p: 1 }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
       <TextField
         variant="outlined"
         value={search}
@@ -157,47 +143,47 @@ const Sensors: FC<Props> = () => {
       />
       <AddSensor />
     </Box> */}
-    <div
-      style={{
-        width: "100%",
-        padding: "5px",
-      }}
-    >
-      <DataGrid
-        sx={{
-          height: "100%",
-          minHeight: "83vh",
-          "& .MuiDataGrid-cell--textCenter": {},
-          "& .MuiDataGrid-columnHeaderTitle": {
-            fontSize: 16,
-            color: (theme: Theme) => theme.palette.text.secondary,
-          },
-          "& .MuiDataGrid-row": {
-            "&:nth-of-typ(2n)": {
-              backgroundColor: (theme: Theme) =>
-                theme.palette.mode === "light"
-                  ? "rgba(235, 235, 235, .9)"
-                  : "rgba(235, 235, 235, .1)",
-            },
-          },
-          color: (theme: Theme) => theme.palette.text.primary,
-          fontSize: 14,
-          "& div": {
-            lineHeight: "59px !important",
-          },
+      <div
+        style={{
+          width: "100%",
+          padding: "5px",
         }}
-        rows={results}
-        columns={columns}
-        rowHeight={80}
-        pageSize={pageSize}
-        density="compact"
-        onRowClick={handleClick}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[10, 20, 50, 100]}
-        disableSelectionOnClick
-      />
-    </div>
-    {/* <Menu
+      >
+        <DataGrid
+          sx={{
+            height: "100%",
+            minHeight: "83vh",
+            "& .MuiDataGrid-cell--textCenter": {},
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontSize: 16,
+              color: (theme: Theme) => theme.palette.text.secondary,
+            },
+            "& .MuiDataGrid-row": {
+              "&:nth-of-typ(2n)": {
+                backgroundColor: (theme: Theme) =>
+                  theme.palette.mode === "light"
+                    ? "rgba(235, 235, 235, .9)"
+                    : "rgba(235, 235, 235, .1)",
+              },
+            },
+            color: (theme: Theme) => theme.palette.text.primary,
+            fontSize: 14,
+            "& div": {
+              lineHeight: "59px !important",
+            },
+          }}
+          rows={results}
+          columns={columns}
+          rowHeight={80}
+          pageSize={pageSize}
+          density="compact"
+          onRowClick={handleClick}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          disableSelectionOnClick
+        />
+      </div>
+      {/* <Menu
       id="basic-menu"
       anchorReference="anchorPosition"
       anchorEl={anchorEl}
@@ -219,7 +205,8 @@ const Sensors: FC<Props> = () => {
       </MenuItem>
       <MenuItem onClick={handleClose}>{t("_add_similar_sensor")}</MenuItem>
     </Menu> */}
-  </Box>;
+    </Box>
+  );
 };
 
 export default Sensors;

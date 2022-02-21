@@ -520,15 +520,21 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
-export type InfoFragment = { __typename?: 'Sensor', sensor_model?: string | null };
+export type Completed_InfoFragment = { __typename?: 'Complete', id: string, name: string };
 
-export type Date_InfoFragment = { __typename?: 'Sensor', entry_year?: number | null, end_of_life?: number | null };
+export type Glass_Lid_Type_InfoFragment = { __typename?: 'GlassLidType', id: string, name: string };
 
-export type Dimension_InfoFragment = { __typename?: 'Sensor', housing_x?: number | null, housing_y?: number | null };
+export type Sensor_InfoFragment = { __typename?: 'Sensor', id: string, sensor_model?: string | null };
 
-export type Sensor_Type_InfoFragment = { __typename?: 'SensorType', name: string };
+export type Sensor_Date_InfoFragment = { __typename?: 'Sensor', entry_year?: number | null, end_of_life?: number | null };
 
-export type Supplier_InfoFragment = { __typename?: 'Supplier', name: string, url?: string | null };
+export type Sensor_Dimension_InfoFragment = { __typename?: 'Sensor', x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null };
+
+export type Sensor_Other_InfoFragment = { __typename?: 'Sensor', housing_glass?: number | null };
+
+export type Sensor_Type_InfoFragment = { __typename?: 'SensorType', id: string, name: string };
+
+export type Supplier_InfoFragment = { __typename?: 'Supplier', id: string, name: string, url?: string | null };
 
 export type SignInMutationVariables = Exact<{
   email: Scalars['String'];
@@ -549,7 +555,7 @@ export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: '
 export type SensorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SensorsQuery = { __typename?: 'Query', sensors?: Array<{ __typename?: 'Sensor', id: string, sensor_model?: string | null, entry_year?: number | null, end_of_life?: number | null, housing_x?: number | null, housing_y?: number | null }> | null };
+export type SensorsQuery = { __typename?: 'Query', sensors?: Array<{ __typename?: 'Sensor', id: string, sensor_model?: string | null, entry_year?: number | null, end_of_life?: number | null, x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null, housing_glass?: number | null, complete?: { __typename?: 'Complete', id: string, name: string } | null, sensor_type?: { __typename?: 'SensorType', id: string, name: string } | null, glass_lid_type?: Array<{ __typename?: 'GlassLidType', id: string, name: string } | null> | null, supplier?: { __typename?: 'Supplier', id: string, name: string, url?: string | null } | null }> | null };
 
 export type SensorTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -571,30 +577,58 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string, email: string, role: Roles }> | null };
 
-export const InfoFragmentDoc = gql`
-    fragment info on Sensor {
+export const Completed_InfoFragmentDoc = gql`
+    fragment completed_info on Complete {
+  id
+  name
+}
+    `;
+export const Glass_Lid_Type_InfoFragmentDoc = gql`
+    fragment glass_lid_type_info on GlassLidType {
+  id
+  name
+}
+    `;
+export const Sensor_InfoFragmentDoc = gql`
+    fragment sensor_info on Sensor {
+  id
   sensor_model
 }
     `;
-export const Date_InfoFragmentDoc = gql`
-    fragment date_info on Sensor {
+export const Sensor_Date_InfoFragmentDoc = gql`
+    fragment sensor_date_info on Sensor {
   entry_year
   end_of_life
 }
     `;
-export const Dimension_InfoFragmentDoc = gql`
-    fragment dimension_info on Sensor {
+export const Sensor_Dimension_InfoFragmentDoc = gql`
+    fragment sensor_dimension_info on Sensor {
+  x_resolution
+  y_resolution
+  pixel_size
   housing_x
   housing_y
+  optical_center_x
+  optical_center_y
+  optical_area_x
+  optical_area_y
+  exact_optical_area_diagonal
+}
+    `;
+export const Sensor_Other_InfoFragmentDoc = gql`
+    fragment sensor_other_info on Sensor {
+  housing_glass
 }
     `;
 export const Sensor_Type_InfoFragmentDoc = gql`
     fragment sensor_type_info on SensorType {
+  id
   name
 }
     `;
 export const Supplier_InfoFragmentDoc = gql`
     fragment supplier_info on Supplier {
+  id
   name
   url
 }
@@ -673,15 +707,32 @@ export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, S
 export const SensorsDocument = gql`
     query Sensors {
   sensors {
-    id
-    ...info
-    ...date_info
-    ...dimension_info
+    ...sensor_info
+    ...sensor_date_info
+    ...sensor_dimension_info
+    ...sensor_other_info
+    complete {
+      ...completed_info
+    }
+    sensor_type {
+      ...sensor_type_info
+    }
+    glass_lid_type {
+      ...glass_lid_type_info
+    }
+    supplier {
+      ...supplier_info
+    }
   }
 }
-    ${InfoFragmentDoc}
-${Date_InfoFragmentDoc}
-${Dimension_InfoFragmentDoc}`;
+    ${Sensor_InfoFragmentDoc}
+${Sensor_Date_InfoFragmentDoc}
+${Sensor_Dimension_InfoFragmentDoc}
+${Sensor_Other_InfoFragmentDoc}
+${Completed_InfoFragmentDoc}
+${Sensor_Type_InfoFragmentDoc}
+${Glass_Lid_Type_InfoFragmentDoc}
+${Supplier_InfoFragmentDoc}`;
 
 /**
  * __useSensorsQuery__
@@ -747,7 +798,6 @@ export type SensorTypesQueryResult = Apollo.QueryResult<SensorTypesQuery, Sensor
 export const SuppliersDocument = gql`
     query Suppliers {
   suppliers {
-    id
     ...supplier_info
   }
 }
