@@ -5,7 +5,7 @@ import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { Box } from "@mui/material";
 import { useQuery } from "@apollo/client";
-import { ME } from "../../operations/queries/user";
+import { ME } from "../../operations/queries/user.query";
 import { loggedUser } from "../../cache";
 
 interface Props {}

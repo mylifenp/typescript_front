@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -520,7 +520,15 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
-export type Supplier_InfoFragment = { __typename?: 'Supplier', name: string, url?: string | null | undefined };
+export type InfoFragment = { __typename?: 'Sensor', sensor_model?: string | null };
+
+export type Date_InfoFragment = { __typename?: 'Sensor', entry_year?: number | null, end_of_life?: number | null };
+
+export type Dimension_InfoFragment = { __typename?: 'Sensor', housing_x?: number | null, housing_y?: number | null };
+
+export type Sensor_Type_InfoFragment = { __typename?: 'SensorType', name: string };
+
+export type Supplier_InfoFragment = { __typename?: 'Supplier', name: string, url?: string | null };
 
 export type SignInMutationVariables = Exact<{
   email: Scalars['String'];
@@ -538,21 +546,53 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', id: string, email: string, role: Roles } };
 
+export type SensorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SensorsQuery = { __typename?: 'Query', sensors?: Array<{ __typename?: 'Sensor', id: string, sensor_model?: string | null, entry_year?: number | null, end_of_life?: number | null, housing_x?: number | null, housing_y?: number | null }> | null };
+
+export type SensorTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SensorTypesQuery = { __typename?: 'Query', sensorTypes: Array<{ __typename?: 'SensorType', id: string, name: string }> };
+
 export type SuppliersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SuppliersQuery = { __typename?: 'Query', suppliers: Array<{ __typename?: 'Supplier', id: string, name: string, url?: string | null | undefined }> };
+export type SuppliersQuery = { __typename?: 'Query', suppliers: Array<{ __typename?: 'Supplier', id: string, name: string, url?: string | null }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string } | null };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string, email: string, role: Roles }> | null | undefined };
+export type GetUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string, email: string, role: Roles }> | null };
 
+export const InfoFragmentDoc = gql`
+    fragment info on Sensor {
+  sensor_model
+}
+    `;
+export const Date_InfoFragmentDoc = gql`
+    fragment date_info on Sensor {
+  entry_year
+  end_of_life
+}
+    `;
+export const Dimension_InfoFragmentDoc = gql`
+    fragment dimension_info on Sensor {
+  housing_x
+  housing_y
+}
+    `;
+export const Sensor_Type_InfoFragmentDoc = gql`
+    fragment sensor_type_info on SensorType {
+  name
+}
+    `;
 export const Supplier_InfoFragmentDoc = gql`
     fragment supplier_info on Supplier {
   name
@@ -630,6 +670,80 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SensorsDocument = gql`
+    query Sensors {
+  sensors {
+    id
+    ...info
+    ...date_info
+    ...dimension_info
+  }
+}
+    ${InfoFragmentDoc}
+${Date_InfoFragmentDoc}
+${Dimension_InfoFragmentDoc}`;
+
+/**
+ * __useSensorsQuery__
+ *
+ * To run a query within a React component, call `useSensorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSensorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSensorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSensorsQuery(baseOptions?: Apollo.QueryHookOptions<SensorsQuery, SensorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SensorsQuery, SensorsQueryVariables>(SensorsDocument, options);
+      }
+export function useSensorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SensorsQuery, SensorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SensorsQuery, SensorsQueryVariables>(SensorsDocument, options);
+        }
+export type SensorsQueryHookResult = ReturnType<typeof useSensorsQuery>;
+export type SensorsLazyQueryHookResult = ReturnType<typeof useSensorsLazyQuery>;
+export type SensorsQueryResult = Apollo.QueryResult<SensorsQuery, SensorsQueryVariables>;
+export const SensorTypesDocument = gql`
+    query SensorTypes {
+  sensorTypes {
+    id
+    ...sensor_type_info
+  }
+}
+    ${Sensor_Type_InfoFragmentDoc}`;
+
+/**
+ * __useSensorTypesQuery__
+ *
+ * To run a query within a React component, call `useSensorTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSensorTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSensorTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSensorTypesQuery(baseOptions?: Apollo.QueryHookOptions<SensorTypesQuery, SensorTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SensorTypesQuery, SensorTypesQueryVariables>(SensorTypesDocument, options);
+      }
+export function useSensorTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SensorTypesQuery, SensorTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SensorTypesQuery, SensorTypesQueryVariables>(SensorTypesDocument, options);
+        }
+export type SensorTypesQueryHookResult = ReturnType<typeof useSensorTypesQuery>;
+export type SensorTypesLazyQueryHookResult = ReturnType<typeof useSensorTypesLazyQuery>;
+export type SensorTypesQueryResult = Apollo.QueryResult<SensorTypesQuery, SensorTypesQueryVariables>;
 export const SuppliersDocument = gql`
     query Suppliers {
   suppliers {

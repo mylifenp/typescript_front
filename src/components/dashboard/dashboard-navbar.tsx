@@ -17,8 +17,9 @@ import { AccountPopover } from "../account-popover";
 // import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 // import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
-import { ME } from "../../operations/queries/user";
+import { ME } from "../../operations/queries/user.query";
 import { useQuery } from "@apollo/client";
+import ModeSwitch from "../mode-switch";
 
 interface Props {
   onOpenSidebar: () => void;
@@ -242,6 +243,9 @@ export const DashboardNavbar: FC<Props> = (props) => {
           <ContentSearchButton />
           <ContactsButton />
           <NotificationsButton /> */}
+          <Box sx={{ ml: 1 }}>
+            <ModeSwitch />
+          </Box>
           <AccountButton user={data.me} />
         </Toolbar>
       </DashboardNavbarRoot>

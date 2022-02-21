@@ -19,7 +19,7 @@ import { client } from "../client";
 import Cookies from "js-cookie";
 import { AUTH_TOKEN } from "../utils/config";
 import { useQuery } from "@apollo/client";
-import { ME } from "../operations/queries/user";
+import { ME } from "../operations/queries/user.query";
 import { isLoggedInVar } from "../cache";
 
 interface Props {
