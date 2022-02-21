@@ -520,6 +520,8 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
+export type Supplier_InfoFragment = { __typename?: 'Supplier', name: string, url?: string | null | undefined };
+
 export type SignInMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -536,6 +538,11 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', id: string, email: string, role: Roles } };
 
+export type SuppliersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SuppliersQuery = { __typename?: 'Query', suppliers: Array<{ __typename?: 'Supplier', id: string, name: string, url?: string | null | undefined }> };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -546,7 +553,12 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string, email: string, role: Roles }> | null | undefined };
 
-
+export const Supplier_InfoFragmentDoc = gql`
+    fragment supplier_info on Supplier {
+  name
+  url
+}
+    `;
 export const SignInDocument = gql`
     mutation signIn($email: String!, $password: String!) {
   signIn(email: $email, password: $password) {
@@ -618,6 +630,41 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SuppliersDocument = gql`
+    query Suppliers {
+  suppliers {
+    id
+    ...supplier_info
+  }
+}
+    ${Supplier_InfoFragmentDoc}`;
+
+/**
+ * __useSuppliersQuery__
+ *
+ * To run a query within a React component, call `useSuppliersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSuppliersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSuppliersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSuppliersQuery(baseOptions?: Apollo.QueryHookOptions<SuppliersQuery, SuppliersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SuppliersQuery, SuppliersQueryVariables>(SuppliersDocument, options);
+      }
+export function useSuppliersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SuppliersQuery, SuppliersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SuppliersQuery, SuppliersQueryVariables>(SuppliersDocument, options);
+        }
+export type SuppliersQueryHookResult = ReturnType<typeof useSuppliersQuery>;
+export type SuppliersLazyQueryHookResult = ReturnType<typeof useSuppliersLazyQuery>;
+export type SuppliersQueryResult = Apollo.QueryResult<SuppliersQuery, SuppliersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

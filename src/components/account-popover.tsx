@@ -97,7 +97,7 @@ export const AccountPopover: FC<Props> = (props) => {
         </Box>
       </Box>
       <Divider />
-      <Box sx={{ my: 1 }}>
+      {/* <Box sx={{ my: 1 }}>
         <RouterLink to="/dashboard/social/profile">
           <MenuItem component="a">
             <ListItemIcon>
@@ -129,7 +129,7 @@ export const AccountPopover: FC<Props> = (props) => {
             primary={<Typography variant="body1">{t("_logout")}</Typography>}
           />
         </MenuItem>
-      </Box>
+      </Box> */}
     </Popover>
   );
 };
