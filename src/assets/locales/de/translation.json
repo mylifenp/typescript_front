@@ -51,7 +51,7 @@
   "_shutter_type_helper_text": "Shutter Typ auswaehlen, Mehrfachnennungen erlaubt",
   "_spectrum": "Spektrum",
   "_spectrum_helper_text": "Für welches Spektrum ist der Sensor erhältlich? UV = UV Licht, VIS = Sichtbares Licht, NIR = Nahes Infrarot, SWIR = Short wave Infrared",
-  "_state": "komplett",
+  "_complete": "komplett",
   "_state_helper_text": "Sind die Sensordaten vollständig oder noch in Bearbeitung",
   "_suppliers": "Hersteller",
   "_supplier_helper_text": "Wähle zwischen DONE (komplett) und working (in Bearbeitung). Wähle nur dann DONE aus, wenn die Informationen komplett sind",
