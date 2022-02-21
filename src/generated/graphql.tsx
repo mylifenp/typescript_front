@@ -524,13 +524,13 @@ export type Completed_InfoFragment = { __typename?: 'Complete', id: string, name
 
 export type Glass_Lid_Type_InfoFragment = { __typename?: 'GlassLidType', id: string, name: string };
 
-export type Sensor_InfoFragment = { __typename?: 'Sensor', id: string, sensor_model?: string | null };
+export type Sensor_InfoFragment = { __typename?: 'Sensor', id: string, sensor_model?: string | null, pixel_lens_cra?: number | null, glass_index?: string | null, glass_lid_thickness?: number | null, focal_plane_from_bottom?: number | null, housing_glass?: number | null };
 
 export type Sensor_Date_InfoFragment = { __typename?: 'Sensor', entry_year?: number | null, end_of_life?: number | null };
 
-export type Sensor_Dimension_InfoFragment = { __typename?: 'Sensor', x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null };
+export type Sensor_Dimension_InfoFragment = { __typename?: 'Sensor', x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, center_shift_x?: number | null, center_shift_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null, aspect_ratio?: string | null, next_optical_class?: number | null };
 
-export type Sensor_Other_InfoFragment = { __typename?: 'Sensor', housing_glass?: number | null };
+export type Sensor_Other_InfoFragment = { __typename?: 'Sensor', housing_glass?: number | null, other_info?: string | null, alternative_designation?: string | null };
 
 export type Sensor_Type_InfoFragment = { __typename?: 'SensorType', id: string, name: string };
 
@@ -555,7 +555,7 @@ export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: '
 export type SensorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SensorsQuery = { __typename?: 'Query', sensors?: Array<{ __typename?: 'Sensor', id: string, sensor_model?: string | null, entry_year?: number | null, end_of_life?: number | null, x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null, housing_glass?: number | null, complete?: { __typename?: 'Complete', id: string, name: string } | null, sensor_type?: { __typename?: 'SensorType', id: string, name: string } | null, glass_lid_type?: Array<{ __typename?: 'GlassLidType', id: string, name: string } | null> | null, supplier?: { __typename?: 'Supplier', id: string, name: string, url?: string | null } | null }> | null };
+export type SensorsQuery = { __typename?: 'Query', sensors?: Array<{ __typename?: 'Sensor', id: string, sensor_model?: string | null, pixel_lens_cra?: number | null, glass_index?: string | null, glass_lid_thickness?: number | null, focal_plane_from_bottom?: number | null, housing_glass?: number | null, entry_year?: number | null, end_of_life?: number | null, x_resolution?: number | null, y_resolution?: number | null, pixel_size?: number | null, housing_x?: number | null, housing_y?: number | null, optical_center_x?: number | null, optical_center_y?: number | null, center_shift_x?: number | null, center_shift_y?: number | null, optical_area_x?: number | null, optical_area_y?: number | null, exact_optical_area_diagonal?: string | null, aspect_ratio?: string | null, next_optical_class?: number | null, other_info?: string | null, alternative_designation?: string | null, complete?: { __typename?: 'Complete', id: string, name: string } | null, sensor_type?: { __typename?: 'SensorType', id: string, name: string } | null, glass_lid_type?: Array<{ __typename?: 'GlassLidType', id: string, name: string } | null> | null, supplier?: { __typename?: 'Supplier', id: string, name: string, url?: string | null } | null }> | null };
 
 export type SensorTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -593,6 +593,11 @@ export const Sensor_InfoFragmentDoc = gql`
     fragment sensor_info on Sensor {
   id
   sensor_model
+  pixel_lens_cra
+  glass_index
+  glass_lid_thickness
+  focal_plane_from_bottom
+  housing_glass
 }
     `;
 export const Sensor_Date_InfoFragmentDoc = gql`
@@ -610,14 +615,20 @@ export const Sensor_Dimension_InfoFragmentDoc = gql`
   housing_y
   optical_center_x
   optical_center_y
+  center_shift_x
+  center_shift_y
   optical_area_x
   optical_area_y
   exact_optical_area_diagonal
+  aspect_ratio
+  next_optical_class
 }
     `;
 export const Sensor_Other_InfoFragmentDoc = gql`
     fragment sensor_other_info on Sensor {
   housing_glass
+  other_info
+  alternative_designation
 }
     `;
 export const Sensor_Type_InfoFragmentDoc = gql`
