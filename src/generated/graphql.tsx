@@ -552,6 +552,14 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', id: string, email: string, role: Roles } };
 
+export type AddSupplierMutationVariables = Exact<{
+  name: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type AddSupplierMutation = { __typename?: 'Mutation', addSupplier: { __typename?: 'AddSupplierResult', success: boolean, supplier: { __typename?: 'Supplier', id: string, name: string, url?: string | null } } };
+
 export type SensorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -715,6 +723,43 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const AddSupplierDocument = gql`
+    mutation AddSupplier($name: String!, $url: String) {
+  addSupplier(input: {name: $name, url: $url}) {
+    success
+    supplier {
+      ...supplier_info
+    }
+  }
+}
+    ${Supplier_InfoFragmentDoc}`;
+export type AddSupplierMutationFn = Apollo.MutationFunction<AddSupplierMutation, AddSupplierMutationVariables>;
+
+/**
+ * __useAddSupplierMutation__
+ *
+ * To run a mutation, you first call `useAddSupplierMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSupplierMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSupplierMutation, { data, loading, error }] = useAddSupplierMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useAddSupplierMutation(baseOptions?: Apollo.MutationHookOptions<AddSupplierMutation, AddSupplierMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddSupplierMutation, AddSupplierMutationVariables>(AddSupplierDocument, options);
+      }
+export type AddSupplierMutationHookResult = ReturnType<typeof useAddSupplierMutation>;
+export type AddSupplierMutationResult = Apollo.MutationResult<AddSupplierMutation>;
+export type AddSupplierMutationOptions = Apollo.BaseMutationOptions<AddSupplierMutation, AddSupplierMutationVariables>;
 export const SensorsDocument = gql`
     query Sensors {
   sensors {
