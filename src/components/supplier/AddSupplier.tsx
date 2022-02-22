@@ -4,19 +4,16 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
 import EditSupplier from "./EditSupplier";
 import {
-  Supplier,
   SupplierInput,
   SuppliersDocument,
   SuppliersQuery,
   useAddSupplierMutation,
-  useSuppliersQuery,
 } from "../../generated/graphql";
 
 interface Props {}

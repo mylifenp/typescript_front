@@ -12,3 +12,11 @@ export const ADD_SUPPLIER = gql`
   }
   ${SUPPLIER_FRAGMENT}
 `;
+
+export const DELETE_SUPPLIER = gql`
+  mutation DeleteSupplier($id: ID!) {
+    deleteSupplier(id: $id) {
+      status
+    }
+  }
+`;

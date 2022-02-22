@@ -560,6 +560,13 @@ export type AddSupplierMutationVariables = Exact<{
 
 export type AddSupplierMutation = { __typename?: 'Mutation', addSupplier: { __typename?: 'AddSupplierResult', success: boolean, supplier: { __typename?: 'Supplier', id: string, name: string, url?: string | null } } };
 
+export type DeleteSupplierMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteSupplierMutation = { __typename?: 'Mutation', deleteSupplier?: { __typename?: 'DeleteSupplierResult', status: boolean } | null };
+
 export type SensorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -760,6 +767,39 @@ export function useAddSupplierMutation(baseOptions?: Apollo.MutationHookOptions<
 export type AddSupplierMutationHookResult = ReturnType<typeof useAddSupplierMutation>;
 export type AddSupplierMutationResult = Apollo.MutationResult<AddSupplierMutation>;
 export type AddSupplierMutationOptions = Apollo.BaseMutationOptions<AddSupplierMutation, AddSupplierMutationVariables>;
+export const DeleteSupplierDocument = gql`
+    mutation DeleteSupplier($id: ID!) {
+  deleteSupplier(id: $id) {
+    status
+  }
+}
+    `;
+export type DeleteSupplierMutationFn = Apollo.MutationFunction<DeleteSupplierMutation, DeleteSupplierMutationVariables>;
+
+/**
+ * __useDeleteSupplierMutation__
+ *
+ * To run a mutation, you first call `useDeleteSupplierMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSupplierMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSupplierMutation, { data, loading, error }] = useDeleteSupplierMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSupplierMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSupplierMutation, DeleteSupplierMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSupplierMutation, DeleteSupplierMutationVariables>(DeleteSupplierDocument, options);
+      }
+export type DeleteSupplierMutationHookResult = ReturnType<typeof useDeleteSupplierMutation>;
+export type DeleteSupplierMutationResult = Apollo.MutationResult<DeleteSupplierMutation>;
+export type DeleteSupplierMutationOptions = Apollo.BaseMutationOptions<DeleteSupplierMutation, DeleteSupplierMutationVariables>;
 export const SensorsDocument = gql`
     query Sensors {
   sensors {
